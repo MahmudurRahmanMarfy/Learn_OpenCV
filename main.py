@@ -1,47 +1,8 @@
+import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.cm import get_cmap
 
-plt.rcParams['figure.figsize'] = [8,8]
-plt.rcParams.update({'font.size': 18})
-
-# define domain
-dx = 0.001
-L = np.pi
-x = L * np.arange(-1+dx, 1+dx, dx)
-n = len(x)
-nquart = int (np.floor(n/4))
-
-# define hat function
-f = np.zeros_like(x)
-f[nquart:2*nquart] =(4/n)*np.arange(1, nquart+1)
-f[2*nquart : 3*nquart] = np.ones(nquart) - (4/n)*np.arange(0,nquart)
-fig, ax = plt.subplots()
-ax.plot(x,f,'-', color = 'k' , linewidth = 2)
-
-# Compute Fourier Series
-
-name = "Accent"
-cmap = plt.get_cmap('tab10')
-colors = cmap.colors
-ax.set_prop_cycle( color= colors)
-
-A0 = np.sum(f * np.ones_like(x)) * dx
-FFS = A0/2
-
-A = np.zeros(20)
-B = np.zeros(20)
-
-for k in range (20):
-    A[k] = np.sum(f * np.cos((k+1) * np.pi * x / L)) * dx
-    B[k] = np.sum(f * np.sin((k+1) * np.pi * x / L)) * dx
-    FFS = FFS + A[k] * np.cos((k+1) * np.pi * x / L) + B[k] * np.sin((k+1) * np.pi * x / L)
-    ax.plot(x, FFS, '-')
-
-
-
-
- musicnotes = cv2.imread("musicnotes.jpg", cv2.IMREAD_GRAYSCALE) 
+musicnotes = cv2.imread("musicnotes.jpg", cv2.IMREAD_GRAYSCALE) 
 
 
 # Threshold
@@ -57,7 +18,7 @@ adt_threshold2 = cv2.adaptiveThreshold(musicnotes,255, cv2.ADAPTIVE_THRESH_MEAN_
 
 # Plot
 
-plt.figure(figsize=[20,20])
+plt.figure(figsize=[30,30])
 
 plt.subplot(3,2,1); plt.imshow(musicnotes, cmap="gray"); plt.title("Original", fontsize=12);
 plt.subplot(3,2,2); plt.imshow(Thres1, cmap="gray"); plt.title("Threshold 50", fontsize=12);
