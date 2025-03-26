@@ -1,31 +1,23 @@
 import cv2
-import numpy as np
-import matplotlib.pyplot as plt
+import sys
 
-musicnotes = cv2.imread("musicnotes.jpg", cv2.IMREAD_GRAYSCALE) 
+s = 0
+if len(sys.argv) > 1:
+     s = sys.argv[1]
 
+source = cv2.VideoCapture(s, cv2.CAP_DSHOW)
+source.set(cv2.CAP_PROP_FRAME_HEIGHT, 960)
+source.set(cv2.CAP_PROP_FRAME_WIDTH, 1080)
 
-# Threshold
+win_name = 'Camera Preview'
+cv2.namedWindow(win_name,cv2.WINDOW_NORMAL)
+cv2.resizeWindow(win_name, 1080, 720)
 
-retval, Thres1 = cv2.threshold(musicnotes, 50, 255, cv2.THRESH_BINARY)
-retval, Thres2 = cv2.threshold(musicnotes, 100, 255, cv2.THRESH_BINARY)
-retval, Thres3 = cv2.threshold(musicnotes, 200, 255, cv2.THRESH_BINARY)
+while cv2.waitKey(1) != 27: #(window close bt ESC button)
+    has_frame , frame = source.read()
+    if not has_frame:
+         break
+    cv2.imshow(win_name, frame)
 
-# Adaptive threshold
-
-adt_threshold1 = cv2.adaptiveThreshold(musicnotes,255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,21,15)
-adt_threshold2 = cv2.adaptiveThreshold(musicnotes,255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,15,11)
-
-# Plot
-
-plt.figure(figsize=[30,30])
-
-plt.subplot(3,2,1); plt.imshow(musicnotes, cmap="gray"); plt.title("Original", fontsize=12);
-plt.subplot(3,2,2); plt.imshow(Thres1, cmap="gray"); plt.title("Threshold 50", fontsize=12);
-plt.subplot(3,2,3); plt.imshow(Thres2, cmap="gray"); plt.title("Threshold 100", fontsize=12);
-plt.subplot(3,2,4); plt.imshow(Thres3, cmap="gray"); plt.title("Threshold 200", fontsize=12);
-
-plt.subplot(3,2,5); plt.imshow(adt_threshold1, cmap="gray"); plt.title("Adaptive Threshold 1", fontsize=12);
-plt.subplot(3,2,6); plt.imshow(adt_threshold2, cmap="gray"); plt.title("Adaptive Threshold 2", fontsize=12);
-
-plt.show()
+source.release()
+cv2.destroyWindow(win_name)
