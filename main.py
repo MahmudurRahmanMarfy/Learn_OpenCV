@@ -65,18 +65,18 @@ while alive:
      elif image_filter == CANNY:
          result = cv2.Canny(frame, 145,150)
      elif image_filter == BLUR:
-         result = cv2.Blur(frame, (13,13))
+         result = cv2.blur(frame, (13,13))
      elif image_filter == FEATURE:
          result = frame
          frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
          corners = cv2.goodFeaturesToTrack(frame_gray, **featuer_preview)
          if corners is not None:
               for x,y in numpy.float32(corners).reshape(-1,2):
-                   cv2.circle(result, (x,y), 10, (0,255,0), 2)
+                   cv2.circle(result, (x,y), 10, (0,255,0), 1)
 
      cv2.imshow(window_name, result)
 
-     key = cv2.waitkey(1)
+     key = cv2.waitKey(1)
      if key == ord('Q') or key == ord('q') or key == 27:
          alive = False
      elif key == ord('C') or key == ord('c'):
