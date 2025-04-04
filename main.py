@@ -35,10 +35,10 @@ BLUR = 1
 FEATURE = 2
 CANNY = 3
 
-featuer_preview = dict( maxCorners = 500,
-                       qaultiyLevel = 0.2,
-                       minDistance = 15,
-                       blockSize = 9)
+featuer_preview = dict( maxCorners=500,
+                        qualityLevel=0.01,  # ensure correct spelling here
+                        minDistance=15,
+                        blockSize=9 )
 
 s = 0
 if len(sys.argv) > 1:
@@ -63,16 +63,16 @@ while alive:
      if image_filter == PREVIEW:
           result = frame
      elif image_filter == CANNY:
-         result = cv2.Canny(frame, 145,150)
+         result = cv2.Canny(frame,75,150)
      elif image_filter == BLUR:
-         result = cv2.blur(frame, (13,13))
+         result = cv2.blur(frame, (15,15))
      elif image_filter == FEATURE:
          result = frame
          frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
          corners = cv2.goodFeaturesToTrack(frame_gray, **featuer_preview)
          if corners is not None:
               for x,y in numpy.float32(corners).reshape(-1,2):
-                   cv2.circle(result, (x,y), 10, (0,255,0), 1)
+                   cv2.circle(result, (int(x), int(y)), 10, (0, 255, 0), 1)
 
      cv2.imshow(window_name, result)
 
