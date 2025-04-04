@@ -63,7 +63,7 @@ while alive:
      if image_filter == PREVIEW:
           result = frame
      elif image_filter == CANNY:
-         result = cv2.Canny(frame,75,150)
+         result = cv2.Canny(frame,100,150)
      elif image_filter == BLUR:
          result = cv2.blur(frame, (15,15))
      elif image_filter == FEATURE:
